@@ -80,12 +80,12 @@ public class operatore {
 				return ris= true;
 			}
 		}
-		return ris;	
+		return ris;	  
 	}
  
 	public static void main(String[] args) {
 	//Prioritarrio
-		//Aggiungere rimuovere un prodotto
+		//Aggiungere su aggiungere la ricerca se l'utente mette lo stesso id
 		//Creare interfaccia utente
 	//Non prioritario
 		//Fare in modo che gneri in modo autonomo il codice (es. riga 0 avra come prima lettera 'a',...)
@@ -119,9 +119,11 @@ public class operatore {
 						break;
 					case 3: 
 						System.out.println("Hai selezionato cambiare la quantià di un prodotto.");
+						cambiareQuat(prodotto, scanner);
 						break;
 					case 4:
 						System.out.println("Hai selezionato cambiare prezzo di un prodtto.");
+						cambiarePrezzo(prodotto, scanner);
 						break;
 					case 5:
 						System.out.println("Hai selezionato il totale incasso di un distributtore.");
@@ -141,6 +143,17 @@ public class operatore {
 				System.out.println("Uscita dall'interfaccia operatore...");
 			}else {
 				System.out.println("Sei entrato nell'interfaccia utente");
+				int i=vuoti(prodotto, scanner);
+				if(i==(prodotto.length*prodotto[0].length)) {
+					System.err.println("Distributtore vuoto. \nAspetta che lo gestore lo riempa");
+				}else {
+					System.out.print("Inserisci l'ID della bevanda: ");
+					String id =controlloID(prodotto, scanner);
+					if(!id.isEmpty()) {
+						int indiceProdotto []= ricerca(prodotto, id);
+						System.out.println(String.format("Il prodotto %s: %.2f euro", prodotto[indiceProdotto[0]][indiceProdotto[1]].getNome(), prodotto[indiceProdotto[0]][indiceProdotto[1]].getPrezzo()));
+					} 		
+				}			
 			}
 		}while((richiesta("Vuoi continuare con il programma? [si/no]: ", scanner)));
 		System.out.println("Uscita dal programma...");
@@ -154,6 +167,57 @@ public class operatore {
 		
 	}
 	
+	static int[] ricerca(prodotti[][] prodotto, String ricercato) {
+	    int[] ric = new int[]{-1, -1}; 
+	    //Verifica se la lista dei prodotti è vuota o nulla
+	    if (prodotto == null || prodotto.length == 0) {
+	        System.out.println("La lista dei prodotti è vuota.");
+	        return ric;//Restituisce l'array con valori di default
+	    }
+	    //Ricerca il prodotto per ID
+	    for (int i = 0; i < prodotto.length; i++) {
+	        for (int j = 0; j < prodotto[i].length; j++) {
+	            if (prodotto[i][j] != null && ricercato.equals(prodotto[i][j].getId())) {
+	                System.out.println("Prodotto trovato.");
+	                ric[0] = i;//Indice della riga
+	                ric[1] = j;//Indice della colonna
+	                return ric;//Restituisce gli indici del prodotto trovato
+	            }
+	        }
+	    }  
+
+	    System.out.println("Prodotto non trovato.");
+	    return ric;//Restituisce l'array con valori (-1, -1)
+	}
+	
+	static String controlloID(prodotti[][] prodotto, Scanner scanner) {
+	    final String regola = "^[a-zA-Z0-9]{1,4}$"; //Solo lettere/numeri, massimo 4 caratteri
+	    String id;
+
+	    while (true) {
+	        System.out.println("Inserisci l'id:");
+	        System.out.println("- Solo lettere e numeri \n- Non più lungo di 4 caratteri ");
+	        id = scanner.nextLine().trim();
+
+	        //Verifica il formato
+	        if (!id.matches(regola)) {
+	            System.err.println("L'ID deve contenere solo lettere e numeri ed essere lungo al massimo 4 caratteri.");
+	        } else {
+	            //Cerca l'ID se esiste
+	            int[] posizione = ricerca(prodotto, id);
+	            if (posizione[0] == -1) {
+	                System.out.println("ID prodotto inesistente.");
+	                if (!richiesta("Sei ancora interessato a prendere un altro prodotto? [si/no]: ", scanner)) {
+	                    System.out.println("Uscita dal programma...");
+	                    return " ";
+	                }
+	            } else {
+	                return id;
+	            }
+	        }
+	    }
+	}
+	 
 	
     //Metodo per aggiungere prodotti alla macchinetta 
 	//Se trova i scaffali pieni non puo aggiuengere nessun prodotto
@@ -342,17 +406,76 @@ public class operatore {
 		    			    	}
 		    			    	System.out.println();
 		    		    	}while(cambiaQuat>prod[i][j].getQuatScomparto()||cambiaQuat<=0);
-		    				
-		    				
-		    				
-		    				System.out.println("Prodotto Cambiato");
-		    				prod[i][j]=null;
-		    				
-		    				
-		    				
-		    				
-		    				
-		    				
+		    				prod[i][j].setQuantita(cambiaQuat);
+		    				System.out.println("Quantita cambiata");
+		    				a++;
+		    				prodottoRim=true;
+		    				break;
+		    			}
+	    			}
+	    		}
+	    		if(prodottoRim==false)break;
+	    	}
+	    	if(prodottoRim==false) {
+	    		System.out.println("Id non trovato.");
+	    	}
+	    	prodottoRim=false;
+    	}while(a<=prodRimuovere);
+    	return prod;
+    }
+    
+    //Cambiare quantita
+    static prodotti[][] cambiarePrezzo(prodotti[][] prod, Scanner scanner) {
+    	
+    	int spazioDisponibile=0; //Variabile per il totale
+    	int prodRimuovere =0;
+    	int spazioVuoti =vuoti(prod, scanner);
+    	String id=" ";
+    	int cambiaQuat =0;
+
+    	//Controllo se è vuoto
+    	if(spazioVuoti==(prod.length*prod[0].length)) {
+    		System.out.println("Il distributtore è vuoto. Non puoi rimuovere nessun prodotto.");
+    		return prod;
+    	}
+    	
+    	//Calcolo degli spazi disponibili
+    	spazioDisponibile= (prod.length*prod[0].length)-spazioVuoti;
+    	System.out.println("Hai uno spazio disponibile di " + spazioDisponibile);
+    	//Controllo per l'input degli spazi disponibile
+    	do {
+	    	System.out.print("Quanti prodotti devi cambiare: ");
+	    	prodRimuovere = scanner.nextInt();
+	    	scanner.nextLine();
+	    	if(prodRimuovere>spazioDisponibile||prodRimuovere<=0) {
+	    		System.out.println("Hai inserito un valore non valido.");
+	    	}
+	    	System.out.println();
+    	}while(prodRimuovere>spazioDisponibile||prodRimuovere<=0);
+    	int a=1;//Conta i numeri di prodotti cambiati
+    	boolean prodottoRim=false;
+    	do {
+        	//Controllo tentativi
+        	id=controlloGenerico ("Inserire l'id: ", scanner, " ");
+	    	//Ciclo per righe
+	    	for(int i=0; i<prod.length; i++) {
+	    		//Ciclo per le colonne
+	    		for(int j=0; j<prod[i].length; j++) {
+	    			if(prod[i][j] != null) {
+		    			//Cotrollo se trova il valore
+		    			if(id.equals(prod[i][j].getId())) {
+		    				//Controllo quantita di cambiamneto prodotti
+		    				do {
+		    			    	System.out.print("Inserisci il nuovo prezzo: ");
+		    			    	cambiaQuat = scanner.nextInt();
+		    			    	scanner.nextLine();
+		    			    	if(cambiaQuat<=0) {
+		    			    		System.out.println("Hai inserito un valore non valido.");
+		    			    	}
+		    			    	System.out.println();
+		    		    	}while(cambiaQuat<=0);
+		    				prod[i][j].setPrezzo(cambiaQuat);
+		    				System.out.println("Prezzo cambiato");
 		    				a++;
 		    				prodottoRim=true;
 		    				break;

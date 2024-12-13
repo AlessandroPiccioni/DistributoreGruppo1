@@ -17,9 +17,11 @@ public class distributtore {
     	return categoria.length;
     }
     
+    //Metodo per lo scomparto massimo
     public int getQuatScomparto() {
     	return quatScomparto;
     }
+    
     
 	//Metodo calcolo dello zucchero
 	
