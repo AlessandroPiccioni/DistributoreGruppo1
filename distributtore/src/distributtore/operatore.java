@@ -6,7 +6,19 @@ import java.util.Scanner;
 
 
 public class operatore {
-	 
+	 //metodo controllo spazi
+	public void controlloSpazi (int quantita,int spazioDisponibile, Scanner scanner) {
+	do {
+    	System.out.print("Seleziona quantità: ");//
+    	quantita = scanner.nextInt();
+    	scanner.nextLine();
+    	if(quantita>spazioDisponibile||quantita<=0) {
+    		System.out.println("Hai inserito un valore non valido.");
+    	}
+    	System.out.println();
+	}while(quantita>spazioDisponibile||quantita<=0);
+	}
+	
 	//Overloading del metodo richiesta
 	//Metodo controllo se vuoi continuare
 	static boolean richiesta(String frase, Scanner scanner) {
@@ -288,7 +300,6 @@ public class operatore {
                     //controlloGenerico("Inserisci il prezzo", scanner, prezzo)
                     //Decremento in modo da far capire che abbiamo aggiunto il prodotto
                     prodottiDaAggiungere--;
-                    System.out.println("Aggiunto prodotto a posizione: [" + i + "][" + j + "]");
                 }
             }
         }
@@ -301,9 +312,9 @@ public class operatore {
 	//Cerca il prodotto che vuoi eliminare
     //Eliminare un specifico prodotta dal distributtore
     static prodotti[][] rimuovere(prodotti[][] prod, Scanner scanner) {
-    	
+    	operatore spazi= new operatore();
     	int spazioDisponibile=0; //Variabile per il totale
-    	int prodRimuovere =0;
+    	int quantita =0;
     	int spazioVuoti =vuoti(prod, scanner);
     	String id=" ";
 
@@ -316,16 +327,10 @@ public class operatore {
     	//Calcolo degli spazi disponibili
     	spazioDisponibile= (prod.length*prod[0].length)-spazioVuoti;
     	System.out.println("Hai uno spazio disponibile di " + spazioDisponibile);
+    	
     	//Controllo per l'input degli spazi disponibile
-    	do {
-	    	System.out.print("Quanti prodotti devi rimuovere: ");
-	    	prodRimuovere = scanner.nextInt();
-	    	scanner.nextLine();
-	    	if(prodRimuovere>spazioDisponibile||prodRimuovere<=0) {
-	    		System.out.println("Hai inserito un valore non valido.");
-	    	}
-	    	System.out.println();
-    	}while(prodRimuovere>spazioDisponibile||prodRimuovere<=0);
+    	spazi.controlloSpazi(quantita, spazioDisponibile, scanner );
+    	
     	int a=1;//Conta i numeri di prodotti rimossi
     	boolean prodottoRim=false;
     	do {
@@ -352,15 +357,15 @@ public class operatore {
 	    		System.out.println("Id non trovato.");
 	    	}
 	    	prodottoRim=false;
-    	}while(a<=prodRimuovere);
+    	}while(a<=quantita);
     	return prod;
     }
     
     //Cambiare quantita
     static prodotti[][] cambiareQuat(prodotti[][] prod, Scanner scanner) {
-    	
+    	operatore spazi= new operatore();
     	int spazioDisponibile=0; //Variabile per il totale
-    	int prodRimuovere =0;
+    	int quantita =0;
     	int spazioVuoti =vuoti(prod, scanner);
     	String id=" ";
     	int cambiaQuat =0;
@@ -374,18 +379,12 @@ public class operatore {
     	//Calcolo degli spazi disponibili
     	spazioDisponibile= (prod.length*prod[0].length)-spazioVuoti;
     	System.out.println("Hai uno spazio disponibile di " + spazioDisponibile);
-    	//Controllo per l'input degli spazi disponibile
-    	do {
-	    	System.out.print("Quanti prodotti devi cambiare: ");
-	    	prodRimuovere = scanner.nextInt();
-	    	scanner.nextLine();
-	    	if(prodRimuovere>spazioDisponibile||prodRimuovere<=0) {
-	    		System.out.println("Hai inserito un valore non valido.");
-	    	}
-	    	System.out.println();
-    	}while(prodRimuovere>spazioDisponibile||prodRimuovere<=0);
+    	
+    	//METODO //Controllo per l'input degli spazi disponibile
+    	spazi.controlloSpazi(quantita, spazioDisponibile, scanner );
+    	
     	int a=1;//Conta i numeri di prodotti cambiati
-    	boolean prodottoRim=false;
+    	boolean quantitaCambiata=false;
     	do {
         	//Controllo tentativi
         	id=controlloGenerico ("Inserire l'id: ", scanner, " ");
@@ -409,18 +408,18 @@ public class operatore {
 		    				prod[i][j].setQuantita(cambiaQuat);
 		    				System.out.println("Quantita cambiata");
 		    				a++;
-		    				prodottoRim=true;
+		    				quantitaCambiata=true;
 		    				break;
 		    			}
 	    			}
 	    		}
-	    		if(prodottoRim==false)break;
+	    		if(quantitaCambiata==false)break;
 	    	}
-	    	if(prodottoRim==false) {
+	    	if(quantitaCambiata==false) {
 	    		System.out.println("Id non trovato.");
 	    	}
-	    	prodottoRim=false;
-    	}while(a<=prodRimuovere);
+	    	quantitaCambiata=false;
+    	}while(a<=quantita);
     	return prod;
     }
     
@@ -428,7 +427,7 @@ public class operatore {
     static prodotti[][] cambiarePrezzo(prodotti[][] prod, Scanner scanner) {
     	
     	int spazioDisponibile=0; //Variabile per il totale
-    	int prodRimuovere =0;
+    	int cambioPrezzo =0;
     	int spazioVuoti =vuoti(prod, scanner);
     	String id=" ";
     	int cambiaQuat =0;
@@ -444,16 +443,16 @@ public class operatore {
     	System.out.println("Hai uno spazio disponibile di " + spazioDisponibile);
     	//Controllo per l'input degli spazi disponibile
     	do {
-	    	System.out.print("Quanti prodotti devi cambiare: ");
-	    	prodRimuovere = scanner.nextInt();
+	    	System.out.print("Quanti prodotti devi cambiare: ");//
+	    	cambioPrezzo = scanner.nextInt();
 	    	scanner.nextLine();
-	    	if(prodRimuovere>spazioDisponibile||prodRimuovere<=0) {
+	    	if(cambioPrezzo>spazioDisponibile||cambioPrezzo<=0) {
 	    		System.out.println("Hai inserito un valore non valido.");
 	    	}
 	    	System.out.println();
-    	}while(prodRimuovere>spazioDisponibile||prodRimuovere<=0);
+    	}while(cambioPrezzo>spazioDisponibile||cambioPrezzo<=0);
     	int a=1;//Conta i numeri di prodotti cambiati
-    	boolean prodottoRim=false;
+    	boolean prezzoCambiato=false;
     	do {
         	//Controllo tentativi
         	id=controlloGenerico ("Inserire l'id: ", scanner, " ");
@@ -477,84 +476,22 @@ public class operatore {
 		    				prod[i][j].setPrezzo(cambiaQuat);
 		    				System.out.println("Prezzo cambiato");
 		    				a++;
-		    				prodottoRim=true;
+		    				prezzoCambiato=true;
 		    				break;
 		    			}
 	    			}
 	    		}
-	    		if(prodottoRim==false)break;
+	    		if(prezzoCambiato==false)break;
 	    	}
-	    	if(prodottoRim==false) {
+	    	if(prezzoCambiato==false) {
 	    		System.out.println("Id non trovato.");
 	    	}
-	    	prodottoRim=false;
-    	}while(a<=prodRimuovere);
+	    	prezzoCambiato=false;
+    	}while(a<=cambioPrezzo);
     	return prod;
     }
     
-    //Metodo per rimuovere prodotti dalla macchinetta 
-	//Se trova i scaffali vuoti non puo togliere nessun prodotto
-	//Cerca il prodotto che vuoi eliminare
-    /*static prodotti[][] rimuovere(prodotti[][] prod, Scanner scanner) {
-    	//Trovo il pieno
-        int prodottiPresenti = prod.length * prod[0].length - vuoti(scaf);
-        // Crea una lista di prodotti da rimuovere
-        ArrayList<prodotti> prodottiDisponibili = new ArrayList<>();
-        int prodottoDaRimuovere;
-        prodotti prodottoSelezionato;
-        //Controlla se sia vuoto i scaffalli  
-        if (prodottiPresenti == 0) {
-            System.out.println("Scaffali vuoti.");
-            return prod;
-        }
-        System.out.println("Prodotti presenti: " + prodottiPresenti);
-        //Cicli per viaggiare nella matrice
-        for (int i = 0; i < prod.length; i++) {
-            for (int j = 0; j < prod[i].length; j++) {
-            	//Controlla se lo scomparso non sia vuoto e poi serve per confronto 
-                if (prod[i][j] != null && prod[i][j].getQuantità() > 0) {
-                    prodottiDisponibili.add(prod[i][j]);
-                    System.out.println((prodottiDisponibili.size()) + ". " + prod[i][j].getNome() + " con quantità: " + prod[i][j].getQuantità());
-                }
-            }
-        } 
-        //Controlla se  non ha trovato nessun prodotto
-        if (prodottiDisponibili.isEmpty()) {
-            System.out.println("Nessun prodotto da rimuovere.");
-            return prod;
-        }
-        //controllo input
-        do {
-            System.out.print("Scegli il prodotto da eliminare: ");
-            prodottoDaRimuovere = scanner.nextInt();
-            scanner.nextLine(); 
-            if (prodottoDaRimuovere < 1 || prodottoDaRimuovere > prodottiDisponibili.size()) {
-                System.out.println("Numero non valido.");
-            }
-        } while (prodottoDaRimuovere < 1 || prodottoDaRimuovere > prodottiDisponibili.size());
-        prodottoSelezionato = prodottiDisponibili.get(prodottoDaRimuovere - 1);
-        System.out.println("Hai scelto di rimuovere: " + prodottoSelezionato.getNome() + " con quantità: " + prodottoSelezionato.getQuantità());
-        int quantitàDaRimuovere;
-        //Chiede la quantità da eliminare
-        do {
-            System.out.print("Quanta quantità di " + prodottoSelezionato.getNome() + " vuoi rimuovere? ");
-            quantitàDaRimuovere = scanner.nextInt();
-            scanner.nextLine(); 
-            if (quantitàDaRimuovere < 1 || quantitàDaRimuovere > prodottoSelezionato.getQuantità()) {
-                System.out.println("Quantità non valida, Inserisci un valore tra 1 e " + prodottoSelezionato.getQuantità() + ".");
-            }
-        } while (quantitàDaRimuovere < 1 || quantitàDaRimuovere > prodottoSelezionato.getQuantità());
-        //Conferma con l'utente se vuole davvero rimuovere la quantità selezionata
-        if (richiesta("Vuoi rimuovere " + quantitàDaRimuovere + " unità di questo prodotto? [si/no]: ", scanner).equals("si")) {
-            prodottoSelezionato.rimuoviQuantità(quantitàDaRimuovere); 
-            System.out.println("Quantità rimossa.");
-        } else {
-            System.out.println("Nessun prodotto rimosso.");
-        }
-
-        return prod;
-    }*/
-    
+   
     //Metodo per calcolare i scomparti vuoti
     //Se il ritorno è 0 vuol dire che il distributtore sia pieno
     static int vuoti(prodotti[][] prod, Scanner scanner) {
