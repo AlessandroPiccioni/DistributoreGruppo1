@@ -123,17 +123,4 @@ public class distributtore {
 			System.err.println("Bacchette finiti.");
 		}
 	}
-    
-	//Metodo calcolo dello zucchero
-	
-	//Metodo calcolo del bicchiere
-	
-	//Metodo della bachetta 
-	
-	//Metodo calcolo monete 
-	
-	//Metodo per il totale dell'incasso
-	
-	//Metodo elenco dei prodotti acquistati con relative quantità
-
 }

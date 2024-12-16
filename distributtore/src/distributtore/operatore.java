@@ -128,7 +128,6 @@ public class operatore {
  
 	public static void main(String[] args) {
 	//Prioritarrio 
-		//Aggiungere su aggiungere la ricerca se l'utente mette lo stesso id
 		//Gestioni delle funzioni di calcolo totale del distributore
 		//Errore prezzo sotto a 1 euro non viene accettato
 		//eRRORE STAMPA CON TROPPI DECIMALI DEL PORTAFOGLIO
@@ -505,7 +504,7 @@ public class operatore {
                     while(true) {
                         id=controlloGenerico("Inserisci il codice univoco del prdotto: ", scanner, id);
                         indice= ricerca(dis, id);
-                    	if(indice[0]!=-1) {
+                    	if(indice[0]>-1) {
                     		break;
                     	}
                     }
