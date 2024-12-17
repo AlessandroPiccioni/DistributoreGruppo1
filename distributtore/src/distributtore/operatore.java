@@ -163,7 +163,7 @@ public class operatore {
 					+ "\n6) Il totale incasso di un distributtore."
 					+ "\n7) Elenco dei prodotti acquistati con le relative quantità."
 					+ "\n8)Uscita...";
-			System.out.println("Sei entrato nell'interfaccia admin");
+			System.out.println("\033[1m Sei entrato nell'interfaccia admin \033[0m");
 	        //Ciclo per far continuare all'utente inserimento delle opzioni nell'interfacccia opretore
 	        do {
 					switch (richiesta(frase1, "[1-8]", scanner)) {
@@ -193,13 +193,13 @@ public class operatore {
 						do{
 							switch(richiesta(frase2, "[1-4]", scanner)) {
 							case 1:
-								String frase = String.format("Inserisci la quantita dei bicchieri (non superiore di %d)", dis.getquatBichieriMax());
+								String frase = String.format("Inserisci la quantita dei bicchieri (non superiore di %d)", dis.getquatBicchieriMax());
 								System.out.println("Hai selezionato gestione dei bicchieri.");
-								dis.setquatBichieriMax(gestioneDistributore(frase, dis.getquatBacchetteMax(), scanner));
+								dis.setquatBicchieriMax(gestioneDistributore(frase, dis.getquatBicchieriMax(), scanner));
 								break;
 							case 2:
 								System.out.println("Hai selezionato gestione quantità zucchero.");
-								frase = String.format("Inserisci la quantita dello zucchero (non superiore di %d)", dis.getQuatZucchero());
+								frase = String.format("Inserisci la quantita dello zucchero (non superiore di %d)", dis.getquatZuccheroMax());
 								dis.setquatZuccheroMax(gestioneDistributore(frase, dis.getquatZuccheroMax(), scanner));
 								break;
 							case 3:
@@ -219,9 +219,11 @@ public class operatore {
 						break;
 					case 6:
 						System.out.println("Hai selezionato il totale incasso di un distributtore.");
+						System.out.println("L'incasso totale è pari a: " +dis.getIncasso());
 						break;
 					case 7:
 						System.out.println("Hai selezionato elenco dei prodotti acquistati con le relative quantità.");
+						dis.listaProdottiAcquistati();
 						break;
 					case 8:
 						System.out.println("Hai selezionato uscita dall'interfaccia utente....");
@@ -237,7 +239,7 @@ public class operatore {
 					System.out.println("Sei entrato nell'interfaccia utente");
 					//Generazione radomiche dei valori dell'utente
 					portafoglio=Math.random()*10+1;//Da 0 a 10
-					System.out.println(String.format("Hai ancora un portafoglio di %.2f", portafoglio));
+					System.out.println(String.format("Hai un budget di %.2f", portafoglio));
 					//Dichiarazione variabile
 					double moneta=0;
 					int i=vuoti(dis, scanner);
@@ -259,11 +261,11 @@ public class operatore {
 								//Controlla se ha i soldi per acquistare quel prodotto
 								if(portafoglio>dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].getPrezzo()) { 
 									//Smista se è bevanda fredda o calda
-									switch(dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].getcont()) {
+									switch(dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].getCont()) {
 									case 1:
 										//Entrato nelle bevande fredde
 										portafoglio = gestioneMoneta(indiceProdotto, scanner, dis, portafoglio);
-										dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].decrementoQuantita(indiceProdotto[0],indiceProdotto[1]); 
+										dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].prodottiAcquistati(indiceProdotto[0],indiceProdotto[1]); 
 										break;
 									case 2:
 										//Dichiarazione e inizializzazione della variabile per la quantita dello zuccheoro
@@ -311,7 +313,7 @@ public class operatore {
 											}
 											System.out.println("Erigazione della bevanda...");
 											//Decremetna la quantita prodoto
-											dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].decrementoQuantita(indiceProdotto[0],indiceProdotto[1]);		
+											dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].prodottiAcquistati(indiceProdotto[0],indiceProdotto[1]);		
 										}else {
 											System.err.println("Bichieri insufficienti.");
 										}
@@ -338,11 +340,11 @@ public class operatore {
 	//Metodo per la gestione delle quantita distributore
 	static int gestioneDistributore (String frase, int quatMax, Scanner scanner) {
 		int quat=0;
-		System.out.println("Hai selezionato gestione dei bicchieri.");
+		
 		do {
 			quat= controlloGenerico(frase, scanner, quat);
 			if(quat>quatMax) {
-				System.err.println("Hai superato il massimo dei bicchieri. ");
+				System.err.println("Hai superato la quantita massima possibile. ");
 			}
 		}while(quat>quatMax);
 		System.out.println("Quantita inserita.");
@@ -359,7 +361,7 @@ public class operatore {
 			moneta=ControlMoneta(scanner);
 			somma += moneta;
 			portafoglio -= somma;
-			System.out.println("Hai ancora un portafoglio di " + portafoglio);
+			System.out.println("Hai un budget di " + portafoglio);
 			//Controlla se gli bastano le monete
 			if(somma<dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].getPrezzo()) {
 				System.err.println("Importo non ancora disponibile");
@@ -408,7 +410,7 @@ public class operatore {
 	        }
 	    }  
 
-	    System.err.println("Prodotto non trovato.");
+	   
 	    return ric;//Restituisce l'array con valori (-1, -1)
 	}
 	
@@ -504,12 +506,23 @@ public class operatore {
                     while(true) {
                         id=controlloGenerico("Inserisci il codice univoco del prdotto: ", scanner, id);
                         indice= ricerca(dis, id);
-                    	if(indice[0]>-1) {
+                    	if(indice[0]==-1) {
+         
                     		break;
                     	}
                     }
+                    nome=controlloGenerico("Inserisci il nome del prodotto: ", scanner, nome);
+                    prezzo=controlloGenerico("Inserisci il prezzo: ", scanner, prezzo);
+                    
+                    while(true) {
+                    	quantita=controlloGenerico("Inserisci la quantita: ", scanner, quantita);
+                    	if(quantita<=dis.getQuatScomparto()) {
+                    		break;
+                    	}
+                    	System.err.println(String.format("Non puoi superare la quantita massima dello scomparto di %d", dis.getQuatScomparto()));
+                    }
                     //Richiamo il costruttore 
-                    dis.getProdotto()[i][j] = new prodotti(controlloGenerico("Inserisci il codice univoco del prdotto: ", scanner, id), controlloGenerico("Inserisci il nome del prodotto: ", scanner, nome), controlloGenerico("Inserisci il prezzo: ", scanner, prezzo), controlloGenerico("Inserisci la quantita: ", scanner, quantita),p);
+                    dis.getProdotto()[i][j] = new prodotti(id, nome,prezzo , quantita,p);
                     //controlloGenerico("Inserisci il prezzo", scanner, prezzo)
                     //Decremento in modo da far capire che abbiamo aggiunto il prodotto
                     prodottiDaAggiungere--;
@@ -530,10 +543,14 @@ public class operatore {
     	int prodRimuovere =0;
     	int spazioVuoti =vuoti(dis, scanner);
     	String id=" ";
+    	
+    	
+    	
 
     	//Controllo se è vuoto
-    	if(spazioVuoti==(dis.getProdotto().length*dis.getProdotto().length)) {
+    	if(spazioVuoti==(dis.getProdotto()[0].length*dis.getProdotto().length)) {
     		System.out.println("Il distributtore è vuoto. Non puoi rimuovere nessun prodotto.");
+    		
     		return dis;
     	}
     	
@@ -655,7 +672,7 @@ public class operatore {
     	int prodRimuovere =0;
     	int spazioVuoti =vuoti(dis, scanner);
     	String id=" ";
-    	int cambiaQuat =0;
+    	double cambiaQuat =0;
 
     	//Controllo se è vuoto
     	if(spazioVuoti==(dis.getProdotto().length*dis.getProdotto()[0].length)) {
@@ -691,7 +708,7 @@ public class operatore {
 		    				//Controllo quantita di cambiamneto prodotti
 		    				do {
 		    			    	System.out.print("Inserisci il nuovo prezzo: ");
-		    			    	cambiaQuat = scanner.nextInt();
+		    			    	cambiaQuat = scanner.nextDouble();
 		    			    	scanner.nextLine();
 		    			    	if(cambiaQuat<=0) {
 		    			    		System.out.println("Hai inserito un valore non valido.");
@@ -728,6 +745,7 @@ public class operatore {
             	//Se li trova vuoti li conta
                 if (scomp == null || scomp.getQuantita() <= 0) {
                     vuoti++;
+                    
                 }
             }
         }
@@ -747,7 +765,7 @@ public class operatore {
     			System.out.println("Hai lasciato il campo vuoto");
     		}
     	}while(sup.isEmpty());
-    	System.out.println("Valore inserito");
+    	
     	return sup;
     } 
     //Metodo controllo generico di una stringa
@@ -767,7 +785,7 @@ public class operatore {
                 System.out.println("Inserisci un numero valido.");
             }
         } while (sup <= 0);
-        System.out.println("Valore inserito");
+        
         return sup;
     }
 
@@ -788,7 +806,7 @@ public class operatore {
                 System.out.println("Inserisci un numero valido.");
             }
         } while (sup <= 0); //Continua finché non è valido
-        System.out.println("Valore inserito");
+       
         return sup;
     }
 
