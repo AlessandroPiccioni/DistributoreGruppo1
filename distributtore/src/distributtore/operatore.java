@@ -16,7 +16,7 @@ public class operatore {
 			System.out.println(frase);
 			scelta= scanner.nextLine().trim().toLowerCase();
 			if(!(scelta.equals("si")||scelta.equals("no"))) {
-				System.out.println("input non valido sbagliato.");
+				System.out.println("input non valido .");
 			}else if(scelta.equals("no")) 
 			{
 				return ris;
@@ -38,7 +38,7 @@ public class operatore {
 					if(!scelta.matches("\\d+")) {
 						System.out.println("Il codice è solo caratteri numerici");
 					}else if(!(scelta.equals("1")||scelta.equals("2")||scelta.equals("3")||scelta.equals("4")||scelta.equals("5")||scelta.equals("6")||scelta.equals("7")||scelta.equals("8"))) {//Controlla se abbia inserito numeri da 0-9
-						System.out.println("input non valido sbagliato.");
+						System.out.println("input non valido.");
 					}else {
 						break;
 					}
@@ -70,7 +70,7 @@ public class operatore {
 					if(!scelta.matches("\\d+")) {
 						System.out.println("Il codice è solo caratteri numerici");
 					}else if(!scelta.matches(range)) {//Controlla se abbia inserito numeri giusti dell'intervallo
-						System.out.println("input non valido sbagliato.");
+						System.out.println("input non valido.");
 					}else {
 						break;
 					}
@@ -127,7 +127,7 @@ public class operatore {
 	}
  
 	public static void main(String[] args) {
-	//Prioritarrio 
+	//Prioritario 
 		//Gestioni delle funzioni di calcolo totale del distributore
 		//Errore prezzo sotto a 1 euro non viene accettato
 		//eRRORE STAMPA CON TROPPI DECIMALI DEL PORTAFOGLIO
@@ -180,7 +180,7 @@ public class operatore {
 						cambiareQuat(dis, scanner);
 						break;
 					case 4:
-						System.out.println("Hai selezionato cambiare prezzo di un prodtto.");
+						System.out.println("Hai selezionato cambiare prezzo di un prodotto.");
 						cambiarePrezzo(dis, scanner);
 						break;
 					case 5:
@@ -218,7 +218,7 @@ public class operatore {
 						}while(ripetizione2);					
 						break;
 					case 6:
-						System.out.println("Hai selezionato il totale incasso di un distributtore.");
+						System.out.println("Hai selezionato il totale incasso di un distributore.");
 						System.out.println("L'incasso totale è pari a: " +dis.getIncasso());
 						break;
 					case 7:
@@ -236,7 +236,7 @@ public class operatore {
 		        } while (ripetizione);    
 				System.out.println("Uscita dall'interfaccia operatore...");
 			}else {
-					System.out.println("Sei entrato nell'interfaccia utente");
+					System.out.println("\033[1m Sei entrato nell'interfaccia utente \033[0m");
 					//Generazione radomiche dei valori dell'utente
 					portafoglio=Math.random()*10+1;//Da 0 a 10
 					System.out.println(String.format("Hai un budget di %.2f", portafoglio));
@@ -303,7 +303,7 @@ public class operatore {
 											}
 											//controlla le bacchette
 											if(dis.getQuatBacchette()<=0) {
-												System.err.println("Bacchette insufficiente.");
+												System.err.println("Bacchette insufficienti.");
 												if(richiesta("Vuoi continuare senza le bacchette?", scanner)==false) {
 													break;
 												}
@@ -311,11 +311,11 @@ public class operatore {
 												//Rilascia la bacchetta
 												dis.decrementoQuatBachette();
 											}
-											System.out.println("Erigazione della bevanda...");
+											System.out.println("\033[1m Erogazione della bevanda... \033[0m");
 											//Decremetna la quantita prodoto
 											dis.getProdotto()[indiceProdotto[0]][indiceProdotto[1]].prodottiAcquistati(indiceProdotto[0],indiceProdotto[1]);		
 										}else {
-											System.err.println("Bichieri insufficienti.");
+											System.err.println("Bicchieri insufficienti.");
 										}
 										break;
 									}
@@ -405,6 +405,7 @@ public class operatore {
 	            if (dis.getProdotto()[i][j] != null && ricercato.equals(dis.getProdotto()[i][j].getId())) {
 	                ric[0] = i;//Indice della riga
 	                ric[1] = j;//Indice della colonna
+	                System.out.print(i+j);
 	                return ric;//Restituisce gli indici del prodotto trovato
 	            }
 	        }
@@ -436,7 +437,7 @@ public class operatore {
 	                    return " ";
 	                }
 	            } else {
-	            	System.out.println("Prodotto torvato");
+	            	System.out.println("Prodotto trovato");
 	                return id;
 	            }
 	        }
@@ -504,7 +505,7 @@ public class operatore {
                     } while (p < 1 || p > 2);
                     int indice[]=new int[2];
                     while(true) {
-                        id=controlloGenerico("Inserisci il codice univoco del prdotto: ", scanner, id);
+                        id=controlloGenerico("Inserisci il codice univoco del prodotto: ", scanner, id);
                         indice= ricerca(dis, id);
                     	if(indice[0]==-1) {
          

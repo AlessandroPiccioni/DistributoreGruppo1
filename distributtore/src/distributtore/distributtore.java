@@ -133,7 +133,7 @@ public class distributtore
 		this.quatBichieri--;
 		if (this.quatBichieri == 0)
 		{
-			System.err.println("Bichieri finiti.");
+			System.err.println("Bicchieri finiti.");
 		}
 	}
 
@@ -144,7 +144,7 @@ public class distributtore
 		this.quatZucchero -= quatZucchero;
 		if (this.quatZucchero == 0)
 		{
-			System.err.println("Zucchero finiti.");
+			System.err.println("Zucchero finito.");
 		}
 	}
 
@@ -155,16 +155,16 @@ public class distributtore
 		this.quatBacchette--;
 		if (this.quatBacchette == 0)
 		{
-			System.err.println("Bacchette finiti.");
+			System.err.println("Bacchette finite.");
 		}
 	}
 
 	// metodo per decrementare quantità
 	public void decrementoQuantita(int riga, int colonna)
 	{
-		System.out.println("sono arrivato qui");
+		System.out.println(prodotto[riga][colonna]);
 		prodotto[riga][colonna].decrQuantita();
-		System.out.println("sono arrivato qui");
+		
 		// somma totale prodotti acquistati
 		incasso += prodotto[riga][colonna].getPrezzo();
 		if (prodotto[riga][colonna].getQuantita() == 0)

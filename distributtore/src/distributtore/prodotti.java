@@ -74,7 +74,9 @@ public class prodotti extends distributtore {
 		this.quantita= quantita;
 	}
 	public void decrQuantita() {
+		System.out.println(this.quantita);
 		this.quantita=this.quantita-1;
+		System.out.println(this.quantita);
 		
 		
 	}
