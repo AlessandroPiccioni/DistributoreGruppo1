@@ -293,7 +293,7 @@ public class operatore {
 														}	
 													}while(quatZucchero>5);	
 													if(dis.getQuatZucchero()<quatZucchero) {
-														System.out.println(String.format("Erogato solo %d zollette di zuccero", dis.getQuatZucchero()));
+														System.out.println(String.format("Erogato solo %d zollette di zucchero", dis.getQuatZucchero()));
 														quatZucchero = dis.getQuatZucchero();
 													}
 													//Rilascia lo zucchero
