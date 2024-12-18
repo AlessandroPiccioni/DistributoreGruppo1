@@ -7,7 +7,7 @@ public class distributtore
 
 	// Attributi
 	// ArrayLsit che contiene i prodotti
-	private prodotti[][] prodotto = new prodotti[10][3];
+	public prodotti[][] prodotto = new prodotti[10][3];
 	protected String[] categoria = { "Calde", "Fredde" }; // Per determinare la categoria del prodotto
 	private int quatScomparto = 30;// Quantita per ogni scomparto
 	private int quatBichieri = 10;
@@ -64,10 +64,10 @@ public class distributtore
 		return prodotto;
 	}
 
-	public void setProdotto(prodotti[][] prodotto)
+	/*public void setProdotto(prodotti[][] prodotto)
 	{
 		this.prodotto = prodotto;
-	}
+	}*/
 
 	public void setCategoria(String[] categoria)
 	{
@@ -162,21 +162,27 @@ public class distributtore
 	// metodo per decrementare quantità
 	public void decrementoQuantita(int riga, int colonna)
 	{
-		System.out.println(prodotto[riga][colonna]);
-		prodotto[riga][colonna].decrQuantita();
-		
-		// somma totale prodotti acquistati
-		incasso += prodotto[riga][colonna].getPrezzo();
-		if (prodotto[riga][colonna].getQuantita() == 0)
-		{
-			prodotto[riga][colonna].setNome(null);
-			prodotto[riga][colonna].setId(null);
-			prodotto[riga][colonna].setPrezzo(0);
-			System.out.println(String.format("Il prodotto %s è stato acquistato. non rimane nessuna quantità disponibile",
-							getProdotto()[riga][colonna].getNome()));
+		if(prodotto[riga][colonna]!=null) {
+			System.out.println(prodotto[riga][colonna]);
+			prodotto[riga][colonna].decrQuantita();
+			
+			// somma totale prodotti acquistati
+			incasso += prodotto[riga][colonna].getPrezzo();
+			if (prodotto[riga][colonna].getQuantita() == 0)
+			{
+				prodotto[riga][colonna].setNome(null);
+				prodotto[riga][colonna].setId(null);
+				prodotto[riga][colonna].setPrezzo(0);
+				System.out.println(String.format("Il prodotto %s è stato acquistato. non rimane nessuna quantità disponibile",
+								getProdotto()[riga][colonna].getNome()));
+			}
+			System.out.println(String.format("Il prodotto %s è stato acquistato. ne rimangono %.2f",
+					getProdotto()[riga][colonna].getNome(), getProdotto()[riga][colonna].getQuantita()));
 		}
-		System.out.println(String.format("Il prodotto %s è stato acquistato. ne rimangono %.2f",
-				getProdotto()[riga][colonna].getNome(), getProdotto()[riga][colonna].getQuantita()));
+		else
+		{
+			System.out.println("il prodotto è null per la riga" + riga + " e colonna" + colonna);
+		}
 	}
 
 	// metodo per cercare nella lista prodotti acquistati
@@ -198,17 +204,21 @@ public class distributtore
 	// prodotti acquistati con relative quantità
 	public void prodottiAcquistati(int riga, int colonna)
 	{
-		
-		decrementoQuantita(riga,colonna);
-		
-		int sup=cercaProdottoAcquistato(prodotto[riga][colonna].getId());
-		if(sup==-1) { //=true
-			prodAcquistati.add(new prodotti(prodotto[riga][colonna].getId(),prodotto[riga][colonna].getNome(),prodotto[riga][colonna].getPrezzo(),1,prodotto[riga][colonna].getCont()));
+		if (prodotto[riga][colonna]!=null) {
+			System.out.println("il prodotto non è null per la riga" + riga + " e colonna" + colonna);
+			decrementoQuantita(riga,colonna);
 			
-		}
-		else {
-			prodAcquistati.get(sup).incrQuantita();
-			//prodotto[riga][colonna].decrQuantita();
+			int sup=cercaProdottoAcquistato(prodotto[riga][colonna].getId());
+			if(sup==-1) { //=true
+				prodAcquistati.add(new prodotti(prodotto[riga][colonna].getId(),prodotto[riga][colonna].getNome(),prodotto[riga][colonna].getPrezzo(),1,prodotto[riga][colonna].getCont()));
+				
+			}
+			else {
+				prodAcquistati.get(sup).incrQuantita();
+				//prodotto[riga][colonna].decrQuantita();
+			}
+		}else {
+			System.out.println("il prodotto  è null per la riga" + riga + " e colonna" + colonna);
 		}
 		/*
 		 * ricerca se prodotto e dentro l'arraylist

@@ -523,7 +523,9 @@ public class operatore {
                     	System.err.println(String.format("Non puoi superare la quantita massima dello scomparto di %d", dis.getQuatScomparto()));
                     }
                     //Richiamo il costruttore 
-                    dis.getProdotto()[i][j] = new prodotti(id, nome,prezzo , quantita,p);
+                    //dis.getProdotto()[i][j] = new prodotti(id, nome,prezzo , quantita,p);
+                    prodotti prodottoDaInserire=new prodotti(id, nome,prezzo , quantita,p);
+                    dis.getProdotto()[i][j]=prodottoDaInserire;
                     //controlloGenerico("Inserisci il prezzo", scanner, prezzo)
                     //Decremento in modo da far capire che abbiamo aggiunto il prodotto
                     prodottiDaAggiungere--;
