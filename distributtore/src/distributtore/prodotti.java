@@ -7,7 +7,7 @@ public class prodotti extends distributtore {
 	private String id= " "; //Id univoco dei prodotti
 	private double prezzo =0;
 	private int quantita = 0;
-	private int cont =0;
+	private int cont =0;//La categoria
 
 	//Costruttore 
 	public prodotti (String id, String nome, double prezzo, int quat, int cont) {
@@ -19,7 +19,7 @@ public class prodotti extends distributtore {
 	} 
 	
 	//Metodo per ottenere il cont
-	public int getcont() {
+	public int getCont() {
 		return cont;
 	}
 	
@@ -28,17 +28,7 @@ public class prodotti extends distributtore {
 		this.nome= cont;
 	}
 	
-	//set del nome
-	public void decrementoQuantita(int riga, int colonna) {
-		this.quantita--;
-		if(this.quantita==0) {
-			this.nome = null;
-			this.id = null;
-			this.prezzo = 0;
-			System.out.println(String.format("Il prodotto %s è stato acquistato. non rimane nessuna quantità disponibile", getProdotto()[riga][colonna].getNome()));
-		}
-		System.out.println(String.format("Il prodotto %s è stato acquistato. ne rimangono %.2f", getProdotto()[riga][colonna].getNome(), getProdotto()[riga][colonna].getQuantita()));			
-	}
+	
 	
 	//Metodo get e set degli attributi 
 	//Get per ottenere il valore
@@ -75,7 +65,7 @@ public class prodotti extends distributtore {
 	}
 	
 	//get della quantita
-	public double getQuantita() {
+	public int getQuantita() {
 		return this.quantita; 
 	}
 	
@@ -83,6 +73,22 @@ public class prodotti extends distributtore {
 	public void setQuantita(int quantita) {
 		this.quantita= quantita;
 	}
+	public void decrQuantita() {
+		try {
+			
+			this.quantita=this.quantita-1;
+		}catch(Exception e){
+			System.err.println("Error: " + e.getMessage());
+			return;
+		}
+		
+	}
+	public void incrQuantita() {
+		this.quantita++;
+		
+		
+	}
+	
 	
 	
 }
